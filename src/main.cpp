@@ -1,11 +1,11 @@
 #include <iostream>
 using namespace std;
-#include "FileParsing.cpp"
+#include "FileParsing.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
     FileParsing fileParsing;
-    fileParsing.read("example.txt");
+    fileParsing.read("ASMFiles/example.txt");
 
     return 0;
 }

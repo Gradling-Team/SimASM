@@ -3,7 +3,6 @@
 #include <iostream>
 #include <fstream>
 #include "FileParsing.h"
-
 using namespace std;
 
 void FileParsing::read(string fileName){
