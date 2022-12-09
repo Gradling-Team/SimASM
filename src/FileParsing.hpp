@@ -17,8 +17,8 @@ public:
     // Destructor
     ~FileParsing();
     // Methods
-    std::string getLine();
-    std::string getLine(int line);
+    std::string getLine(); // Get the next line in the file
+    std::string getLine(int line); // Get line at line number
     // Getters
     int getLineNum() const;
     int getLineCount() const;
@@ -26,8 +26,8 @@ private:
     // Variables
     std::string filename;
     std::ifstream file;
-    int lineNum;
-    int lineCount;
+    int lineNum; // current line number
+    int lineCount; // Number of lines in file
     // Methods
     int countLines();
 };
