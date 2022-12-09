@@ -14,8 +14,22 @@ void FileParsing::read(string fileName){
     // Use a while loop together with the getline() function to read the file line by line
     while (getline (MyReadFile, myText)) {
         // Output the text from the file
-        cout << myText;
+
+        if (!myText.find('!')){
+            continue;
+        }
+        cout << myText << endl;
     }
     // Close the file
     MyReadFile.close();
+}
+string FileParsing::parseWord(string line){
+    string word;
+    for(char i : line){
+        if(i == ' '){
+            break;
+        }
+        word += i;
+    }
+    return word;
 }
