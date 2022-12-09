@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(src)
 
-add_executable(SimASM src/FileParsing.cpp src/FileParsing.h src/main.cpp)
+add_executable(SimASM src/main.cpp src/FileParsing.hpp src/FileParsing.cpp)

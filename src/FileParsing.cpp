@@ -1,34 +1,67 @@
-//Class creation test and file reading
+// Source File for class FileParsing
+// Created by vinanddrinks on 09/12/2022.
+// Copyright (c) 2022 Gradling Team. All rights reserved.
 
-#include <iostream>
-#include <fstream>
-#include "FileParsing.h"
-using namespace std;
+// Includes
+#include "FileParsing.hpp"
 
-void FileParsing::read(string fileName){
-    // Create a text string, which is used to output the text file
-    string myText;
-    // Read from the text file
-    ifstream MyReadFile(fileName);
-    // Use a while loop together with the getline() function to read the file line by line
-    while (getline (MyReadFile, myText)) {
-        // Output the text from the file
-
-        if (!myText.find('!')){
-            continue;
-        }
-        cout << myText << endl;
+// Constructor
+FileParsing::FileParsing(const std::string& filename) {
+    this->file.open(filename);
+    // Check if file is open
+    if (!this->file.is_open()) {
+        std::cerr << "Error: File not found" << std::endl;
+        exit(1);
     }
-    // Close the file
-    MyReadFile.close();
+    this->lineNum = 0;
+    this->lineCount = countLines();
 }
-string FileParsing::parseWord(string line){
-    string word;
-    for(char i : line){
-        if(i == ' '){
-            break;
-        }
-        word += i;
+
+// Destructor
+FileParsing::~FileParsing() {
+    this->file.close();
+}
+
+// Methods
+std::string FileParsing::getLine() {
+    //reset fileStream Status
+    this->file.clear();
+    std::string lineStr;
+    std::getline(this->file, lineStr);
+    this->lineNum++;
+    return lineStr;
+}
+
+std::string FileParsing::getLine(int line) {
+    //reset fileStream Status
+    this->file.clear();
+    std::string lineStr;
+    this->file.seekg(0, std::ios::beg);
+    for (int i = 0; i < line; i++) {
+        std::getline(this->file, lineStr);
     }
-    return word;
+    this->lineNum = line;
+    return lineStr;
 }
+int FileParsing::countLines() {
+    //reset fileStream Status
+    this->file.clear();
+    std::string lineStr;
+    int lineCount = 0;
+    while (std::getline(this->file, lineStr)) {
+        lineCount++;
+    }
+    this->file.clear();
+    this->file.seekg(0, std::ios::beg);
+    return lineCount;
+}
+
+// Getters
+int FileParsing::getLineNum() const {
+    return this->lineNum;
+}
+int FileParsing::getLineCount() const {
+    return this->lineCount;
+}
+
+// End of FileParsing.cpp
