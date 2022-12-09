@@ -24,8 +24,6 @@ FileParsing::~FileParsing() {
 
 // Methods
 std::string FileParsing::getLine() {
-    //reset fileStream Status
-    this->file.clear();
     std::string lineStr;
     std::getline(this->file, lineStr);
     this->lineNum++;
@@ -51,8 +49,9 @@ int FileParsing::countLines() {
     while (std::getline(this->file, lineStr)) {
         lineCount++;
     }
-    this->file.clear();
-    this->file.seekg(0, std::ios::beg);
+    //Reset fileStream Status
+    this->file.clear();//clear any errors
+    this->file.seekg(0, std::ios::beg);//back to the start!
     return lineCount;
 }
 
