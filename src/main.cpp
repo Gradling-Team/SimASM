@@ -4,11 +4,14 @@
 #include <iostream>
 using namespace std;
 #include "FileParsing.hpp"
+#include "SyntaxChecker.hpp"
 
 int main() {
     FileParsing file("ASMFiles/example.txt");
-    for(int i = 0; i < file.getLineCount(); i++) {
+    /*for(int i = 0; i < file.getLineCount(); i++) {
         cout << file.getLine(i) << endl;
-    }
+    }*/
+    SyntaxChecker syntaxChecker(&file);
+    syntaxChecker.checkSyntax();
     return 0;
 }

@@ -10,62 +10,41 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include "SyntaxSubClasses/Instructions.cpp"
+#include "FileParsing.hpp"
 
 
 // class definition
-class FileParsing {
+class SyntaxChecker {
 public:
     // Constructor
-    //explicit SyntaxChecking(const std::string& filename);
+    explicit SyntaxChecker(FileParsing *file);
     // Destructor
-    //~SyntaxChecking();
+    ~SyntaxChecker();
     // Methods
+    void checkSyntax();
     // Getters
 private:
-    // Variables
-    std::string filename;
-    std::ifstream file;
-    int lineNum; // current line number
-    int lineCount; // Number of lines in file
-    //
-    const std::string REGISTER[6] = {"T0", "T1", "T2", "T3", "SP", "PC"};
-    const std::string keyWord[2] = {"#DATA", "#CODE"};
-    const Instructions INSTRUCTION[5] = {
-            Instructions("LDA", REG, RVC, NO),
-            Instructions("STR",VAR, RC, NO),
-            Instructions("PUSH", RVC, NO, NO),
-            Instructions("POP", REG, NO, NO),
-            Instructions("AND", REG, RVC, NO)
+    struct Instruction{
+        std::string name;
+        std::string arg1;
+        std::string arg2;
+        std::string arg3;
     };
-
-
-/*
-                {"LDA",{REG, RVC, NO}},
-                                    {"STR",{VAR, RC, NO}},
-                                    {"PUSH",{RVC, NO, NO}},
-                                    {"POP",{REG, NO, NO}},
-                                    {"AND",{REG, RVC, NO}},
-                                    {"OR",{REG, RVC, NO}},
-                                    {"NOT",{REG, NO, NO}},
-                                    {"ADD",{REG, RVC, NO}},
-                                    {"SUB",{REG, RVC, NO}},
-                                    {"DIV",{REG, RVC, NO}},
-                                    {"MUL",{REG, RVC, NO}},
-                                    {"MOD",{REG, RVC, NO}},
-                                    {"INC",{REG, NO, NO}},
-                                    {"DEC",{REG, NO, NO}},
-                                    {"BEQ",{RVC, RVC, LABEL}},
-                                    {"BNE",{RVC, RVC, LABEL}},
-                                    {"BBG",{RVC, RVC, LABEL}},
-                                    {"BSM",{RVC, RVC, LABEL}},
-                                    {"JMP",{LABEL, NO}},
-                                    {"HLT",{NO, NO}}};*/
-
-
+    //variables
+    std::string varName[100];
+    int varNumber;
+    int dataStart;
+    int codeStart;
+    FileParsing * file;
+    int currentLine;
+    int instructionCount;
+    Instruction** instructions;
     // Methods
-    int countLines();
+    void dataSyntax(void);
+    void addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3);
+    // Constants
+    const std::string REGISTER[6] = {"T0", "T1", "T2", "T3", "SP", "PC"};
+    const std::string keyWord[2] = {"#DATA\r", "#CODE\r"};
 };
 
-
-#endif //SIMASM_SYNTAXCHECKER_HPP
+#endif

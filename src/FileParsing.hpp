@@ -31,4 +31,4 @@ private:
     // Methods
     int countLines();
 };
-#endif //SIMASM_FILEPARSING_HPP
+#endif
