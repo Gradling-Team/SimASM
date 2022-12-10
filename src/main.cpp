@@ -6,8 +6,8 @@ using namespace std;
 #include "FileParsing.hpp"
 
 int main() {
-    FileParsing file("ASMFiles/example.txt");
-    for(int i = 0; i < file.getLineCount(); i++) {
+    FileParsing file("ASMFiles/example.txt"); // Create FileParsing object
+    for(int i = 0; i < file.getLineCount(); i++) { // Loop through each line in the file
         cout << file.getLine(i) << endl;
     }
     return 0;

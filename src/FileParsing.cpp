@@ -45,14 +45,14 @@ int FileParsing::countLines() {
     //reset fileStream Status
     this->file.clear();
     std::string lineStr;
-    int lineCount = 0;
+    int i = 0;
     while (std::getline(this->file, lineStr)) {
-        lineCount++;
+        i++;
     }
     //Reset fileStream Status
     this->file.clear();//clear any errors
     this->file.seekg(0, std::ios::beg);//back to the start!
-    return lineCount;
+    return i;
 }
 
 // Getters
