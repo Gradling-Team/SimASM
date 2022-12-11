@@ -37,20 +37,25 @@ SyntaxChecker::SyntaxChecker(FileParsing *file) {
     addInstruction("JMP", "LABEL", "NO", "NO");
     addInstruction("HLT", "NO", "NO", "NO");
 }
-
+// Check the syntax of the file
 void SyntaxChecker::checkSyntax() {
     currentLine = 0;
+    //loop until the end of the file
     while(currentLine < file->getLineCount()){
+        //get the current line
         std::string line = this->file->getLine(currentLine);
+        //increment the line counter
         currentLine++;
         std::cout << line << std::endl;
+        //check if the line is a comment
         if(line.front() == '!'){
             continue;
         }
+        //check if the line is a data line
         if(line.front() == '#'){
+            //check if we enter the data section
             if(line == keyWord[0]){
                 dataSyntax();
-                currentLine++;
                 continue;
             }
             if(line == keyWord[1]){
@@ -68,43 +73,62 @@ SyntaxChecker::~SyntaxChecker() {
     delete this->instructions;
 }
 //methods
+//Check the syntax of the data section
 void SyntaxChecker::dataSyntax(void) {
+    //Get the first data line
     std::string line = this->file->getLine(currentLine);
+    //Temporary variable to store the variable name
     std::string variableName;
+    //loop until the end of the data section
     while(line.front() != '#' and currentLine < file->getLineCount()){
+        //Get the current data line
         line = this->file->getLine(currentLine);
+        currentLine++;
         std::cout << line << std::endl;
+        //check if the line is a comment or an empty line
         if(line.front() == '!' or line.front() == '\r'){
-            currentLine++;
-            line = this->file->getLine(currentLine);
             continue;
         }
         int i = 0;
         variableName = "";
-        while (line[i] != ' ') {
+        //get the variable name
+        while (line[i] != ' ' and i < line.length()) {
             variableName += line[i];
             i++;
-            if (i >= line.length()) {
-                std::cout << "^^^Error: missing value^^^" << std::endl;
-                currentLine++;
+        }
+        //Increment i until we find a value
+        while (line[i] == ' ') {
+            i++;
+        }
+        //check if there is a value
+        if (i >= line.length() -1) {
+            std::cout << "^^^Error: missing value^^^" << std::endl;
+            continue;
+        }
+        //Check if the given value is a number
+        while(i < line.length() -1) {
+            char t = line[i];
+            if (line[i] < '0' or line[i] > '9') {
+                std::cout << "^^^Error: value is not a number^^^" << std::endl;
                 break;
             }
+            i++;
         }
+
+        //check if the variable name is valid
         for(int j = 0; j < varNumber; j++) {
             if (varName[j] == variableName) {
                 std::cout << "^^^Variable already declared^^^" << std::endl;
                 continue;
             }
         }
-        //todo (demain): la dernière variable est squeezée en cas de missing value ou je sais pas trop quand, bonne nuit
-        currentLine++;
         varName[varNumber] = variableName;
         varNumber++;
     }
     currentLine--;
 
 }
-
+// Add an instruction to the instruction list
 void SyntaxChecker::addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3) {
     auto** temp = new Instruction*[instructionCount+1];
     for(int i = 0; i < instructionCount; i++){
