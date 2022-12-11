@@ -36,6 +36,10 @@ SyntaxChecker::SyntaxChecker(FileParsing *file) {
     addInstruction("BSM", "RVC", "RVC", "LABEL");
     addInstruction("JMP", "LABEL", "NO", "NO");
     addInstruction("HLT", "NO", "NO", "NO");
+    addInstruction("NOP", "NO","NO", "NO");
+    addInstruction("PEEK", "REG", "NO", "NO");
+    addInstruction("PEEKN", "REG", "C", "NO");
+
 }
 // Check the syntax of the file
 void SyntaxChecker::checkSyntax() {
@@ -117,7 +121,10 @@ void SyntaxChecker::dataSyntax(void) {
         }
         //Check if the given value is a number
         while(i < line.length() -1) {
-            if ((line[i] < '0' or line[i] > '9' ) and line[i] != '?') {
+            //std::cout << "char= "<< line[i] << "i" << i << "long= "<< line.length()<< std::endl;
+            if ((line[i] < '0' or line[i] > '9' ) and line[i] != '?' and line[i] != ','
+            or (line[i] == ',' and (line.length() == i +2  or line[i+1] == ',' or line[i-1] == ' '))
+            ) {
                 std::cout << "^^^Error: value is not a number^^^" << std::endl;
                 break;
             }
