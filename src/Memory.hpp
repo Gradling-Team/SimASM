@@ -29,6 +29,7 @@ class Memory {
         int get(int address);
         int get(const std::string& name, int shift); // indirect addressing
         int getAddr(const std::string& name);
+        void storeArray(const std::string& name, int * data, int length);
         void clear();
 };
 

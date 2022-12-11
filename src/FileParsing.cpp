@@ -54,7 +54,11 @@ int FileParsing::countLines() {
     this->file.seekg(0, std::ios::beg);//back to the start!
     return i;
 }
-
+//reset fileStream Status
+void FileParsing::cleanFStream() {
+    this->file.clear();
+    this->file.seekg(0, std::ios::beg);
+}
 // Getters
 int FileParsing::getLineNum() const {
     return this->lineNum;

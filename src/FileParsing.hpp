@@ -19,6 +19,7 @@ public:
     // Methods
     std::string getLine(); // Get the next line in the file
     std::string getLine(int line); // Get line at line number
+    void cleanFStream(); // Clean the fstream
     // Getters
     int getLineNum() const;
     int getLineCount() const;

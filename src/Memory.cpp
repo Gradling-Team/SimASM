@@ -63,6 +63,16 @@ int Memory::erase(int address) {
     }
     return data;
 }
+void Memory::storeArray(const std::string& name, int * data, int length) {
+    for(int i = this->size; i < length; i++) {
+        if(i >= 0x10000) {
+            std::cout << "Error: Address out of bounds" << std::endl;
+            return;
+        }
+        store(name, data[i], i);
+        this->size++;
+    }
+}
 //getters
 int Memory::get(int address) {
     for (const auto &i : memory) {

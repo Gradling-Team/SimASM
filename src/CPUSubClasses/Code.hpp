@@ -10,7 +10,7 @@ class Code {// singleton class to store executable assembly code
 private:
     static Code *instancePtr;
     Code();
-    ~Code();
+
     std::string *code;
     int codeSize;
     int labelCount;
@@ -27,6 +27,8 @@ public:
     std::string getLine(int lineNumber);
     int getLabelLineNumber(const std::string& name);
     int getCodeSize() const;
+
+    ~Code();
 };
 
 
