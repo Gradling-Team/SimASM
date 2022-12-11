@@ -134,10 +134,20 @@ void FileParsing::loadCode() {
     while (line != "#CODE") {
         line = getLine();
     }
+    // we remember the line number of the first line of code
+    int codeStart = this->lineNum;
     // we load the code
     while (this->lineNum < this->lineCount) {
         line = getLine();
         if (line.find('!') != std::string::npos) {
+            continue;
+        }
+        // if line is a label
+        if (line.find(':') != std::string::npos) {
+            std::string labelName;
+            std::stringstream ss(line);
+            std::getline(ss, labelName, ':');
+            this->codePtr->addLabel(labelName, this->lineNum - codeStart);
             continue;
         }
         this->codePtr->add(line);
