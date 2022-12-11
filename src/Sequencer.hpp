@@ -6,7 +6,7 @@
 #define SIMASM_SEQUENCER_HPP
 #include <iostream>
 #include <string>
-#include "CPUSubClasses/Code.hpp"
+#include "CPUdependencies/Code.hpp"
 #include "FileParsing.hpp"
 #include "Memory.hpp"
 class Sequencer { // this class analyse the code from the text file and load the variable in the memory, and the code in the code memory

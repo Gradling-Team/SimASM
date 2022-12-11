@@ -1,7 +1,7 @@
 // Source file for the register class
 // Created by vinanddrinks on 09/12/2022.
 // Copyright (c) 2022 Gradling Team. All rights reserved.
-#include "CPUSubClasses/Register.hpp"
+#include "CPUdependencies/Register.hpp"
 
 // includes
 #include <iostream>
