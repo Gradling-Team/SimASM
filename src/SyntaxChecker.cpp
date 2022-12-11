@@ -65,6 +65,7 @@ void SyntaxChecker::checkSyntax() {
                 continue;
             }
             std::cout << "^^^Error: Unknown keyword^^^" << std::endl;
+            continue;
         }
         std::cout << "^^^Error: Unknown Syntax error^^^" << std::endl;
 
@@ -127,6 +128,7 @@ void SyntaxChecker::dataSyntax(void) {
         for(int j = 0; j < varNumber; j++) {
             if (varName[j] == variableName) {
                 std::cout << "^^^Variable already declared^^^" << std::endl;
+                isvar = false;
                 continue;
             }
         }
@@ -146,7 +148,7 @@ void SyntaxChecker::dataSyntax(void) {
         }
         if(isvar){
         varName[varNumber] = variableName;
-        varNumber++;
+        varNumber++;}
     }
 
 }
@@ -165,3 +167,124 @@ void SyntaxChecker::addInstruction(std::string name, std::string arg1, std::stri
     instructionCount++;
 }
 
+void SyntaxChecker::codeSyntax() {
+    //Get the first code line
+    std::string line = this->file->getLine(currentLine);
+    std::string buffer;
+    int instructionIndex;
+    //loop until the end of the code section
+    bool code = true;
+    while(code and currentLine < file->getLineCount()){
+        //Get the current code line
+        line = this->file->getLine(currentLine);
+        currentLine++;
+        std::cout << line << std::endl;
+        bool isinstr = false;
+        //check if the line is a comment or an empty line
+        if(line.front() == '!' or line.front() == ' '){
+            continue;
+        }
+        int i = 0;
+        buffer  = "";
+        //get instruction name
+        while (line[i] != ' ' and i < line.length()) {
+            buffer += line[i];
+            i++;
+        }
+        //Check if the instruction is valid
+        for(int j = 0; j < instructionCount; ++j) {
+            if(buffer == instructions[j]->name){
+                instructionIndex = j;
+                isinstr = true;
+            }
+        }
+        if(!isinstr){
+            std::cout << "^^^Error : Invalide Instruction^^^" << std::endl;
+        }
+        for (int j = 0; j < 3; ++j) {
+            //Increment i until we find a value
+            while (line[i] == ' ') {
+                i++;
+            }
+            buffer = "";
+            while (line[i] != ' ' and i < line.length() -1) {
+                buffer += line[i];
+                i++;
+            }
+            if(argValidity(buffer, instructions[instructionIndex]->args[j])){
+                continue;
+            }
+        }
+
+    }
+}
+
+//Check if the given argument type is valid
+bool SyntaxChecker::argValidity(std::string arg, std::string argtype) {
+    //check if the argument is a register
+    if(argtype == "REG"){
+        for (const auto & i : REGISTER) {
+            if(arg == i){
+                return true;
+            }
+        }
+    }
+    //check if the argument is a variable
+    if(argtype == "VAR"){
+        for (int i = 0; i < varNumber; ++i) {
+            if(arg == varName[i]){
+                return true;
+            }
+        }
+    }
+    //check if the argument is a const or a register
+    if(argtype == "RC"){
+        bool isnumber = true;
+        for (char i : arg) {
+            if(i < '0' or i > '9'){
+                isnumber = false;
+            }
+        }
+        if(isnumber){
+            return true;
+        }
+        for (const auto & i : REGISTER) {
+            if(arg == i){
+                return true;
+            }
+        }
+    }
+    if(argtype == "RVC"){
+
+        //Check if the argument is a register
+        for (const auto & i : REGISTER) {
+            if(arg == i){
+                return true;
+            }
+        }
+        //Check if the argument is a variable
+        for (int i = 0; i < varNumber; ++i) {
+            if(arg == varName[i]){
+                return true;
+            }
+        }
+        //Check if the argument is a number
+        bool isnumber = true;
+        for (char i : arg) {
+            if(i < '0' or i > '9'){
+                isnumber = false;
+            }
+        }
+        if(isnumber){
+            return true;
+        }
+    }
+    //Check if argument is necessary
+    if(argtype == "NO"){
+        if(arg == ""){
+        return true;}
+    }
+    std::cout << "^^^Error: Invalid argument, expected: " + argtype + "^^^" << std::endl;
+    return false;
+
+}
