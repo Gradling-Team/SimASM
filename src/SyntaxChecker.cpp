@@ -56,10 +56,12 @@ void SyntaxChecker::checkSyntax() {
             //check if we enter the data section
             if(line == keyWord[0]){
                 dataSyntax();
-                continue;
+                //Update the line with currentLine -1 because the currentLine has been incremented
+                line = this->file->getLine(currentLine-1);
             }
             if(line == keyWord[1]){
-                codeStart = currentLine-1;
+                codeSyntax();
+                std::cout << "Code syntax is correct" << std::endl;
                 continue;
             }
             std::cout << "^^^Error: Unknown keyword^^^" << std::endl;
@@ -80,12 +82,18 @@ void SyntaxChecker::dataSyntax(void) {
     //Temporary variable to store the variable name
     std::string variableName;
     //loop until the end of the data section
-    while(line.front() != '#' and currentLine < file->getLineCount()){
+    bool data = true;
+    while(data and currentLine < file->getLineCount()){
+        bool isvar = true;
         //Get the current data line
         line = this->file->getLine(currentLine);
         currentLine++;
         std::cout << line << std::endl;
         //check if the line is a comment or an empty line
+        if(line.front() == '#'){
+            data = false;
+            continue;
+        }
         if(line.front() == '!' or line.front() == '\r'){
             continue;
         }
@@ -101,14 +109,14 @@ void SyntaxChecker::dataSyntax(void) {
             i++;
         }
         //check if there is a value
+        //We use line.length()-1 because the last character is a carriage return
         if (i >= line.length() -1) {
             std::cout << "^^^Error: missing value^^^" << std::endl;
             continue;
         }
         //Check if the given value is a number
         while(i < line.length() -1) {
-            char t = line[i];
-            if (line[i] < '0' or line[i] > '9') {
+            if ((line[i] < '0' or line[i] > '9' ) and line[i] != '?') {
                 std::cout << "^^^Error: value is not a number^^^" << std::endl;
                 break;
             }
@@ -122,10 +130,24 @@ void SyntaxChecker::dataSyntax(void) {
                 continue;
             }
         }
+        for (int j = 0; j < 20; ++j) {
+            if(variableName == instructions[j]->name){
+                std::cout << "^^^Error: variable name is a reserved keyword^^^" << std::endl;
+                isvar = false;
+                continue;
+            }
+        }
+        for (int j = 0; j<6; ++j) {
+            if(variableName == REGISTER[j]){
+                std::cout <<"^^^Error: variable name is a register name^^^"<< std::endl;
+                isvar = false;
+                continue;
+            }
+        }
+        if(isvar){
         varName[varNumber] = variableName;
         varNumber++;
     }
-    currentLine--;
 
 }
 // Add an instruction to the instruction list
@@ -136,9 +158,9 @@ void SyntaxChecker::addInstruction(std::string name, std::string arg1, std::stri
     }
     temp[instructionCount] = new Instruction;
     temp[instructionCount]->name = std::move(name);
-    temp[instructionCount]->arg1 = std::move(arg1);
-    temp[instructionCount]->arg2 = std::move(arg2);
-    temp[instructionCount]->arg3 = std::move(arg3);
+    temp[instructionCount]->args[0] = std::move(arg1);
+    temp[instructionCount]->args[1] = std::move(arg2);
+    temp[instructionCount]->args[2] = std::move(arg3);
     this->instructions = temp;
     instructionCount++;
 }
