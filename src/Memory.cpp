@@ -19,18 +19,36 @@ Memory::~Memory() {
 }
 //methods
 void Memory::store(std::string name, int data) {
-    size++;
+    // check if the name is already in the memory
+    for (int i = 0; i < this->size; i++) {
+        if (this->memory[i].name == name) {
+            // if it is, update the data
+            this->memory[i].data = data;
+            return;
+        }
+    }
+    // if it isn't, add it to the memory
+    // check if the memory is full
+    if (this->size == 0x10000) {
+        // if it is, throw an error
+        throw std::runtime_error("Memory is full");
+    }
     MemoryCell cell;
     cell.name = std::move(name);
     cell.address = size;
     cell.data = data;
-    memory.push_back(cell);
+    if(size == 0){
+        memory[size] = cell;
+    }else {
+        memory.push_back(cell);
+    }
+    size++;
 }
 void Memory::store(const std::string& name, int data, int shift) {
     int address = getAddr(name);
     address += shift;
     if(address >= 0x10000) {
-        std::cout << "Error: Address out of bounds" << std::endl;
+        std::cout << "Error: memory is full" << std::endl;
         return;
     }
     if(address >= size) {
@@ -63,14 +81,9 @@ int Memory::erase(int address) {
     }
     return data;
 }
-void Memory::storeArray(const std::string& name, int * data, int length) {
-    for(int i = this->size; i < length; i++) {
-        if(i >= 0x10000) {
-            std::cout << "Error: Address out of bounds" << std::endl;
-            return;
-        }
-        store(name, data[i], i);
-        this->size++;
+void Memory::storeArray(const std::string& name, int ** data, int length) {
+    for (int i = 0; i < length; i++) {
+        store(name, data[i][0], i);
     }
 }
 //getters
@@ -110,6 +123,35 @@ int Memory::getAddr(const std::string &name) {
         }
     }
     return 0;
+}
+int Memory::getCurrentSize() {
+    return size;
+}
+Memory::MemoryCell Memory::getCell(const std::string& name) {
+    for (const auto &i : memory) {
+        if (i.name == name) {
+            return i;
+        }
+    }
+    // if not found return empty cell
+    MemoryCell cell;
+    cell.name = "null";
+    cell.address = 0;
+    cell.data = 0;
+    return cell;
+}
+Memory::MemoryCell Memory::getCell(int address) {
+    for (const auto &i : memory) {
+        if (i.address == address) {
+            return i;
+        }
+    }
+    // if not found return empty cell
+    MemoryCell cell;
+    cell.name = "null";
+    cell.address = 0;
+    cell.data = 0;
+    return cell;
 }
 //clear
 void Memory::clear() {

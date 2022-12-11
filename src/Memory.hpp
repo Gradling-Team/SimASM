@@ -28,8 +28,12 @@ class Memory {
         int get(const std::string& name);
         int get(int address);
         int get(const std::string& name, int shift); // indirect addressing
+        // get memory cell
+        MemoryCell getCell(const std::string& name);
+        MemoryCell getCell(int address);
+        int getCurrentSize();
         int getAddr(const std::string& name);
-        void storeArray(const std::string& name, int * data, int length);
+        void storeArray(const std::string& name, int ** data, int length);
         void clear();
 };
 

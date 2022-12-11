@@ -55,22 +55,22 @@ void ArithmeticLogicUnit::jumpToLabel(const std::string& label) {
 }
 void ArithmeticLogicUnit::BEQ(const std::string& r1, const std::string& r2, const std::string& label) {
     if(stackRegisters->getRegisterValue(r1) == stackRegisters->getRegisterValue(r2)) {
-
+        jumpToLabel(label);
     }
 }
 void ArithmeticLogicUnit::BNE(const std::string& r1, const std::string& r2, const std::string& label) {
     if(stackRegisters->getRegisterValue(r1) != stackRegisters->getRegisterValue(r2)) {
-
+        jumpToLabel(label);
     }
 }
 void ArithmeticLogicUnit::BBG(const std::string& r1, const std::string& r2, const std::string& label) {
     if(stackRegisters->getRegisterValue(r1) >= stackRegisters->getRegisterValue(r2)) {
-
+        jumpToLabel(label);
     }
 }
 void ArithmeticLogicUnit::BSM(const std::string& r1, const std::string& r2, const std::string& label) {
     if(stackRegisters->getRegisterValue(r1) < stackRegisters->getRegisterValue(r2)) {
-
+        jumpToLabel(label);
     }
 }
 void ArithmeticLogicUnit::JMP(const std::string& label) {

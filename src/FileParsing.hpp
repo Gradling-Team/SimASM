@@ -9,6 +9,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include "Memory.hpp"
+#include "CPUdependencies/Code.hpp"
 // class definition
 class FileParsing {
 public:
@@ -17,19 +19,26 @@ public:
     // Destructor
     ~FileParsing();
     // Methods
-    std::string getLine(); // Get the next line in the file
-    std::string getLine(int line); // Get line at line number
-    void cleanFStream(); // Clean the fstream
+    void loadIntoFileContents(); // Loads the file into a vector of strings all get operations will be done on this vector
+    std::string getLine(); // Gets the next line in the file
+    std::string getLine(int line); // Gets the line at the specified line number
+    int countLines(); // Counts the number of lines in the file
     // Getters
     int getLineNum() const;
     int getLineCount() const;
+    // Code and Data Sequencing and loading
+    void loadCode(); // Load the code into the Code class
+    void loadVar(const std::string& line); // Load a single variable into the Memory class
+    void loadArray(const std::string& line); // Load an array into the Memory class
+    void loadMemory(); // Load the data into the Memory class
 private:
     // Variables
     std::string filename;
     std::ifstream file;
+    std::vector<std::string> fileContents;
     int lineNum; // current line number
     int lineCount; // Number of lines in file
-    // Methods
-    int countLines();
+    Memory* memPtr;
+    Code* codePtr;
 };
 #endif //SIMASM_FILEPARSING_HPP
