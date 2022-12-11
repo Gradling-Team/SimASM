@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(src)
 
-add_executable(SimASM src/main.cpp src/FileParsing.hpp src/FileParsing.cpp src/CPUSubClasses/StackRegisters.cpp src/CPUSubClasses/StackRegisters.hpp src/CPUSubClasses/Register.cpp src/CPUSubClasses/Register.hpp src/CPUSubClasses/ALU.cpp src/CPUSubClasses/ALU.hpp src/Sequencer.cpp src/Sequencer.hpp src/CPUSubClasses/Code.cpp src/CPUSubClasses/Code.hpp src/Memory.cpp src/Memory.hpp)
+add_executable(SimASM src/main.cpp src/FileParsing.hpp src/FileParsing.cpp src/CPUdependencies/StackRegisters.cpp src/CPUdependencies/StackRegisters.hpp src/CPUdependencies/Register.cpp src/CPUdependencies/Register.hpp src/CPUdependencies/ArithmeticLogicUnit.cpp src/CPUdependencies/ArithmeticLogicUnit.hpp src/Sequencer.cpp src/Sequencer.hpp src/CPUdependencies/Code.cpp src/CPUdependencies/Code.hpp src/Memory.cpp src/Memory.hpp)

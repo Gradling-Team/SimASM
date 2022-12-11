@@ -1,17 +1,17 @@
-// Header File for the ALU class
+// Header File for the ArithmeticLogicUnit class
 // Created by vinanddrinks on 09/12/2022.
 // Copyright (c) 2022 Gradling Team. All rights reserved.
 
-#ifndef SIMASM_ALU_HPP
-#define SIMASM_ALU_HPP
+#ifndef SIMASM_ARITHMETICLOGICUNIT_HPP
+#define SIMASM_ARITHMETICLOGICUNIT_HPP
 #include <iostream>
 #include "StackRegisters.hpp"
 #include "Code.hpp"
 #include "../Memory.hpp"
-class ALU { // Arithmetic Logic Unit for the CPU simulator
+class ArithmeticLogicUnit { // Arithmetic Logic Unit for the CPU simulator
 public:
-    ALU(); // Constructor
-    ~ALU(); // Destructor
+    ArithmeticLogicUnit(); // Constructor
+    ~ArithmeticLogicUnit(); // Destructor
     //logical
     void AND(const std::string& r1, const std::string& r2); // ANDs two registers/constant
     void OR(const std::string& r1, const std::string& r2); // ORs two registers/constant
@@ -56,4 +56,4 @@ private:
 };
 
 
-#endif //SIMASM_ALU_HPP
+#endif //SIMASM_ARITHMETICLOGICUNIT_HPP
