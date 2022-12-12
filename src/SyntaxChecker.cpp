@@ -144,7 +144,7 @@ void SyntaxChecker::dataSyntax() {
             i++;
         }
         //check if there is a value
-        //We use line.length() to check if we are at the end of the line
+        //We use line.length() to check if we are
         if (i >= line.length()) {
             std::cout << "^^^Error: missing value^^^" << std::endl;
             errorCount++;
