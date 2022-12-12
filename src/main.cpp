@@ -27,7 +27,7 @@ int main() {
         cout << "line: " << i << " Op: " << code->getLine(i) << endl;
     }
     ControlProcessUnit one;
-    one.run();
+    one.run(true);
     cout << "Memory status: " << endl;
     for (int i = 0; i < mem->getCurrentSize(); i++) {
         cout << "Address: " << i << " Name: "+mem->getCell(i).name<<" Data: " << mem->get(i) << endl;
