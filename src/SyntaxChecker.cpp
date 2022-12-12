@@ -44,6 +44,20 @@ SyntaxChecker::SyntaxChecker(FileParsing *file) {
     addInstruction("PEEKN", "REG", "C", "NO");
 
 }
+// Add an instruction to the instruction list of instruction
+void SyntaxChecker::addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3) {
+    auto** temp = new Instruction*[instructionCount+1];
+    for(int i = 0; i < instructionCount; i++){
+        temp[i] = this->instructions[i];
+    }
+    temp[instructionCount] = new Instruction;
+    temp[instructionCount]->name = std::move(name);
+    temp[instructionCount]->args[0] = std::move(arg1);
+    temp[instructionCount]->args[1] = std::move(arg2);
+    temp[instructionCount]->args[2] = std::move(arg3);
+    this->instructions = temp;
+    instructionCount++;
+}
 //Main function to check the syntax of the file,
 void SyntaxChecker::checkSyntax() {
     //loop until the end of the file
@@ -96,29 +110,31 @@ SyntaxChecker::~SyntaxChecker() {
 //methods
 //Check the syntax of the data section
 void SyntaxChecker::dataSyntax() {
-    //Get the first data line
-    std::string line = this->file->getLine(currentLine);
+    //Store each line of the data section
+    std::string line;
     //Temporary variable to store the variable name
     std::string variableName;
     //loop until the end of the data section
     bool data = true;
     while(data and currentLine < file->getLineCount()){
+        //Set to false if the variable name isn't valid and can't go directly to the next line
         bool isvar = true;
         //Get the current data line
         line = this->file->getLine(currentLine);
         currentLine++;
         std::cout << line << std::endl;
-        //check if the line is a comment or an empty line
+        //If we find a new key word
         if(line.front() == '#'){
             data = false;
             continue;
         }
+        //check if the line is a comment or an empty line
         if(line.front() == '!' or line.empty()){
             continue;
         }
+        //get the variable name
         int i = 0;
         variableName = "";
-        //get the variable name
         while (line[i] != ' ' and i < line.length()) {
             variableName += line[i];
             i++;
@@ -148,6 +164,7 @@ void SyntaxChecker::dataSyntax() {
         }
 
         //check if the variable name is valid
+        //The variable may be already declared
         for(int j = 0; j < varCount; j++) {
             if (varName[j] == variableName) {
                 std::cout << "^^^Variable already declared^^^" << std::endl;
@@ -156,6 +173,7 @@ void SyntaxChecker::dataSyntax() {
                 continue;
             }
         }
+        //tHe variable may be a reserved word
         for (int j = 0; j < instructionCount; ++j) {
             if(variableName == instructions[j]->name){
                 std::cout << "^^^Error: variable name is a reserved keyword^^^" << std::endl;
@@ -164,6 +182,7 @@ void SyntaxChecker::dataSyntax() {
                 continue;
             }
         }
+        //The variable may be a name of register
         for (int j = 0; j<4; ++j) {
             if(variableName == REGISTER[j]){
                 std::cout <<"^^^Error: variable name is a register name^^^"<< std::endl;
@@ -172,52 +191,49 @@ void SyntaxChecker::dataSyntax() {
                 continue;
             }
         }
+        //The variable may be start with a number
         if(variableName.front()<= '9' and variableName.front() >= '0'){
             std::cout <<"^^^Error: variable can't start with a number^^^"<< std::endl;
             errorCount++;
             isvar = false;
             continue;
         }
+        //If isvar is still true we add it to the variable list
         if(isvar){
         varName[varCount] = variableName;
         varCount++;}
     }
 
 }
-// Add an instruction to the instruction list
-void SyntaxChecker::addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3) {
-    auto** temp = new Instruction*[instructionCount+1];
-    for(int i = 0; i < instructionCount; i++){
-        temp[i] = this->instructions[i];
-    }
-    temp[instructionCount] = new Instruction;
-    temp[instructionCount]->name = std::move(name);
-    temp[instructionCount]->args[0] = std::move(arg1);
-    temp[instructionCount]->args[1] = std::move(arg2);
-    temp[instructionCount]->args[2] = std::move(arg3);
-    this->instructions = temp;
-    instructionCount++;
-}
 
+// Check the syntax of the code section
 void SyntaxChecker::codeSyntax() {
     //Get the first code line
     std::string line = this->file->getLine(currentLine);
+    //Buffer will be used to store code, word by word
     std::string buffer;
+    //Store the line where code start
     int codeSyntaxLine = currentLine;
     //Index of the instruction in the instruction array
     int instructionIndex;
-    //Find the labels
+    //Before checking the syntax line by line we store the labels
     while(currentLine < file->getLineCount()){
+        //get the first code line
         line = this->file->getLine(currentLine);
         currentLine++;
-        if(line[line.length()-2]== ':'){
+        //The line is a label if the last character is a ":"
+        if(line[line.length()-1]== ':'){
+            //we add it to the list only if it's not already in the list
             bool notinlist = true;
+            //Go through the label list
             for(int j = 0; j < labelCount; j++){
                 if(label[j].name == line){
+                    //If the label is in the list we increment the number of time it's used
                     label[j].nbr++;
                     notinlist = false;
                 }
             }
+            //Add it to the list
             if(notinlist){
                 label[labelCount].name = line;
                 label[labelCount].nbr = 1;
@@ -225,14 +241,14 @@ void SyntaxChecker::codeSyntax() {
             }
         }
     }
-    //loop until the end of the code section
+    //now we can loop until the end of the code section
     currentLine = codeSyntaxLine;
     while(currentLine < file->getLineCount()){
         //Get the current code line
         line = this->file->getLine(currentLine);
         currentLine++;
         std::cout << line << std::endl;
-        bool isinstr = false;
+        bool isLabel = false;
         //check if the line is a comment or an empty line
         if(line.front() == '!' or line.empty()){
             continue;
@@ -246,10 +262,11 @@ void SyntaxChecker::codeSyntax() {
         }
         //Continue if the line is a label
         int labelNbr = 0;
+        //Go through the label list
         for(int j = 0; j < labelCount; j++){
            if(line == label[j].name){
-
-                isinstr = true;
+                //If we find it, the line is a label
+                isLabel = true;
                 //Check if the label is valid
                 if(line.front()<='9' and line.front()>='0'){
                     std::cout << "^^^Error: label name can't start with a number^^^" << std::endl;
@@ -270,7 +287,6 @@ void SyntaxChecker::codeSyntax() {
                         continue;
                     }
                 }
-
                if(label[j].nbr > 1){
                    std::cout << "^^^Error: label name appears more than once^^^" << std::endl;
                    errorCount++;
@@ -278,40 +294,47 @@ void SyntaxChecker::codeSyntax() {
                }
             }
         }
-        //todo : créer une variable equivalente à isintr mais pour les labels
-        if(isinstr) continue;
+        //If the line is a label we continue
+        if(isLabel) continue;
         //Check if the instruction is valid
+        bool isinstr = false;
+        //Check if the instruction exists
         for(int j = 0; j < instructionCount; ++j) {
             if (buffer == instructions[j]->name) {
                 instructionIndex = j;
                 isinstr = true;
             }
         }
-
-
-
+        //else, print an error message
         if(!isinstr){
             std::cout << "^^^Error : Invalid Instruction^^^" << std::endl;
             errorCount++;
             continue;
         }
+        //The instruction is valid, we check the arguments
         for ( std::string & arg : instructions[instructionIndex]->args) {
             //Increment i until we find a value
             while (line[i] == ' ') {
                 i++;
             }
+            //fill the buffer with the value
             buffer = "";
             while (line[i] != ' ' and i < line.length()) {
                 buffer += line[i];
                 i++;
             }
+            //Check if the function is overloaded
+            //It is the case for LDA and STR, if a third argument is present, then change the type to "C"
             if((instructions[instructionIndex]->name == "LDA" or instructions[instructionIndex]->name == "STR") and arg == "NO"
             and !buffer.empty()){
                 arg = "C";
+                //CHeck the validity of the argument
                 argValidity(buffer, arg);
+                //Put it back to NO
                 arg = "NO";
                 continue;
             }
+            //Here the function is not overloaded
             if(argValidity(buffer, arg)){
                 continue;
             }
@@ -326,13 +349,14 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
     bool index = false;
     if(arg.back() == ']'){
         arg.pop_back();
+        //Until the first bracket is found, the argument must be a number
         while (arg.back() != '[') {
             if (arg.back() < '0' or arg.back() > '9') {
                 std::cout << "^^^Error: array index is not a number or missing '['^^^" << std::endl;
                 errorCount++;
                 return false;
             }
-            if (arg.back() <= '9' and arg.back() >= '0') {
+            else{
                 index = true;
             }
             arg.pop_back();
