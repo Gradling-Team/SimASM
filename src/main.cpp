@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #include "FileParsing.hpp"
-
+#include "SyntaxChecker.hpp"
 #include "ControlProcessUnit.hpp"
 
 int main() {
