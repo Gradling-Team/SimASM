@@ -24,6 +24,10 @@ There can be indirect stores, for instance `STR R1, R2` will store the contents 
 Push the contents of reg/var or const into the top of the stack.
 ##### POP - Pop from the top of the stack
 Pop the contents of the top of the stack into reg/var. Storing into Memory regions is NOT ALLOWED.
+#### PEEK - Peek at the top of the stack
+Check the value of the element at the top of the stack
+#### PEEKN - Peek at the nth element of the stack
+Check the value of the element at the nth position from the top of stack
 #### Logical Operations
 The logical operations are the following:
 there cannot be result stored in a memory region.
@@ -65,10 +69,10 @@ Jump to the label.
 #### Misc
 ##### HLT - Halt
 Halt the execution of the program.
-##### SRL - Shift Right Logical
-Shift the contents of reg1 to the right by the amount of bits specified in reg2 or const.
-##### SLL - Shift Left Logical
-Shift the contents of reg1 to the left by the amount of bits specified in reg2 or const.
+##### SRR - Shift Register Right
+Shift the contents of reg1 to the right by the amount of bits specified in const.
+##### SRL - Shift Register Left
+Shift the contents of reg1 to the left by the amount of bits specified in const.
 
 
 
