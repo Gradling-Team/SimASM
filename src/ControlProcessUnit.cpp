@@ -18,10 +18,10 @@ ControlProcessUnit::~ControlProcessUnit() {
     this->memPtr = nullptr;
     this->codePtr = nullptr;
 }
-void ControlProcessUnit::run(bool stepBystep) {// this function represent a cpu cycle
+void ControlProcessUnit::run(bool stepByStep) {// this function represent a cpu cycle
     //get the next line of code
     // if the user wants to step through the code
-    this->stepByStep = stepBystep;
+    this->stepByStep = stepByStep;
     // we display an acknowledgment
     if (this->stepByStep) {
         std::cout << "You are now stepping through the code." << std::endl;
@@ -40,8 +40,17 @@ void ControlProcessUnit::run(bool stepBystep) {// this function represent a cpu 
             memPtr->display();
             aluPtr->displayStatus();
             // we wait for the user to acknowledge
-            std::cout << "Press enter to continue..." << std::endl;
-            std::cin.get();
+            std::string tmp = " ";
+            while(tmp != "y" && tmp != "Y" && tmp !="n" && tmp !="N" && tmp !="\n" && tmp != "\r" && tmp != ""){
+            std::cout << "do you want to keep step by step ? [Y/n]"<<std::endl;
+            std::getline(std::cin, tmp);
+            std::cout << tmp << std::endl;
+            if(tmp == "y" || tmp == "Y" || tmp == "\n" || tmp == "\r" || tmp == ""){
+            continue;}
+            if(tmp == "n" || tmp == "N"){
+                stepByStep = false;
+            }}
+
         }
         //execute the op code
         this->executeOpCode();

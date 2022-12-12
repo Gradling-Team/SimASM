@@ -73,6 +73,8 @@ int FileParsing::getLineCount() const {
 // code loading start after the "#CODE" section header and end at the end of the file.
 // comments start with "!" and end at the end of the line, comments are ignored
 void FileParsing::loadMemory() {
+    // we clear fstream status
+    this->lineNum = 0;
     std::string line;
     while (this->lineNum < this->lineCount) {
         line = getLine();
