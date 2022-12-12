@@ -171,6 +171,6 @@ std::ostream &operator<<(std::ostream &os, const Memory &memory) {
     return os;
 }
 
-void Memory::display() {
+void Memory::display() const {
     std::cout << *this;
 }

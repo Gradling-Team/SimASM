@@ -101,11 +101,15 @@ void SyntaxChecker::checkSyntax() {
     }
     else{
         std::cout << "---" << errorCount << " error(s) found---" << std::endl;
+        exit(1);
     }
 }
 //destructor
 SyntaxChecker::~SyntaxChecker() {
-    delete this->instructions;
+    for(int i = 0; i < instructionCount; i++){
+        delete instructions[i];
+    }
+    delete[] instructions;
 }
 //methods
 //Check the syntax of the data section
@@ -118,7 +122,7 @@ void SyntaxChecker::dataSyntax() {
     bool data = true;
     while(data and currentLine < file->getLineCount()){
         //Set to false if the variable name isn't valid and can't go directly to the next line
-        bool isvar = true;
+        bool isVar = true;
         //Get the current data line
         line = this->file->getLine(currentLine);
         currentLine++;
@@ -169,7 +173,7 @@ void SyntaxChecker::dataSyntax() {
             if (varName[j] == variableName) {
                 std::cout << "^^^Variable already declared^^^" << std::endl;
                 errorCount++;
-                isvar = false;
+                isVar = false;
                 continue;
             }
         }
@@ -178,16 +182,16 @@ void SyntaxChecker::dataSyntax() {
             if(variableName == instructions[j]->name){
                 std::cout << "^^^Error: variable name is a reserved keyword^^^" << std::endl;
                 errorCount++;
-                isvar = false;
+                isVar = false;
                 continue;
             }
         }
         //The variable may be a name of register
-        for (int j = 0; j<4; ++j) {
-            if(variableName == REGISTER[j]){
+        for (const auto & j : REGISTER) {
+            if(variableName == j){
                 std::cout <<"^^^Error: variable name is a register name^^^"<< std::endl;
                 errorCount++;
-                isvar = false;
+                isVar = false;
                 continue;
             }
         }
@@ -195,11 +199,10 @@ void SyntaxChecker::dataSyntax() {
         if(variableName.front()<= '9' and variableName.front() >= '0'){
             std::cout <<"^^^Error: variable can't start with a number^^^"<< std::endl;
             errorCount++;
-            isvar = false;
             continue;
         }
-        //If isvar is still true we add it to the variable list
-        if(isvar){
+        //If isVar is still true we add it to the variable list
+        if(isVar){
         varName[varCount] = variableName;
         varCount++;}
     }
@@ -261,7 +264,6 @@ void SyntaxChecker::codeSyntax() {
             i++;
         }
         //Continue if the line is a label
-        int labelNbr = 0;
         //Go through the label list
         for(int j = 0; j < labelCount; j++){
            if(line == label[j].name){
@@ -273,15 +275,15 @@ void SyntaxChecker::codeSyntax() {
                     errorCount++;
                     continue;
                 }
-                for (char i : line) {
-                    if(i == ' '){
+                for (char instance : line) {
+                    if(instance == ' '){
                         std::cout << "^^^Error: label can't have space^^^" << std::endl;
                         errorCount++;
                         continue;
                     }
                 }
-                for (int i = 0; i < instructionCount; i++) {
-                    if(line == instructions[i]->name){
+                for (int counter = 0; counter < instructionCount; counter++) {
+                    if(line == instructions[counter]->name){
                         std::cout << "^^^Error: label name is a reserved keyword^^^" << std::endl;
                         errorCount++;
                         continue;

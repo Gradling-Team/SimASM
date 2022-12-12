@@ -41,10 +41,10 @@ void ControlProcessUnit::run(bool stepByStep) {// this function represent a cpu 
             aluPtr->displayStatus();
             // we wait for the user to acknowledge
             std::string tmp = " ";
-            while(tmp != "y" && tmp != "Y" && tmp !="n" && tmp !="N" && tmp !="\n" && tmp != "\r" && tmp != ""){
+            while(tmp != "y" && tmp != "Y" && tmp !="n" && tmp !="N" && tmp !="\n" && tmp != "\r" && !tmp.empty()){
             std::cout << "do you want to keep step by step ? [Y/n]"<<std::endl;
             std::getline(std::cin, tmp);
-            if(tmp == "y" || tmp == "Y" || tmp == "\n" || tmp == "\r" || tmp == ""){
+            if(tmp == "y" || tmp == "Y" || tmp == "\n" || tmp == "\r" || tmp.empty()){
             continue;}
             if(tmp == "n" || tmp == "N"){
                 stepByStep = false;
@@ -380,7 +380,7 @@ void ControlProcessUnit::executeOpCode() {
 
 }
 //get the argument type
-// 0 if register, 1 if memory, 2 if immediate/constant
+// 0 if registered, 1 if memory, 2 if immediate/constant
 // a register start by T, a memory variable start by a letter, an immediate/constant start by a number
 int ControlProcessUnit::getArgType(const std::string& arg) {
     //if the argument is a register

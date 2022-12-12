@@ -3,7 +3,6 @@
 // Copyright (c) 2022 Gradling Team. All rights reserved.
 
 #include "ArithmeticLogicUnit.hpp"
-#include <utility>
 #include "Code.hpp"
 // Constructor
 ArithmeticLogicUnit::ArithmeticLogicUnit() {

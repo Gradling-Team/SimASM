@@ -22,7 +22,6 @@ public:
     void loadIntoFileContents(); // Loads the file into a vector of strings all get operations will be done on this vector
     std::string getLine(); // Gets the next line in the file
     std::string getLine(int line); // Gets the line at the specified line number
-    int countLines(); // Counts the number of lines in the file
     // Getters
     int getLineNum() const;
     int getLineCount() const;

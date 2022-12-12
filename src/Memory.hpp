@@ -35,8 +35,8 @@ class Memory {
         int getAddr(const std::string& name);
         void storeArray(const std::string& name, int ** data, int length);
         void clear();
-        void display();
+        void display() const;
 };
 
 
-#endif //SIMASM;_MEMORY_HPP
+#endif //SIMASM_MEMORY_HPP

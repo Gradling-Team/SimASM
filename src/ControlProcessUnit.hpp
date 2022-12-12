@@ -41,7 +41,7 @@ private:
     // Methods
     void loadOpCode(const std::string& line);
     void executeOpCode();
-    static int getArgType(const std::string& arg); // 0 if register, 1 if memory, 2 if immediate/constant
+    static int getArgType(const std::string& arg); // 0 if registered, 1 if memory, 2 if immediate/constant
 
 };
 

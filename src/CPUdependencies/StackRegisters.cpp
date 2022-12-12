@@ -41,8 +41,8 @@ void StackRegisters::printStack() {
     }
 }
 void StackRegisters::displayRegisters() {
-    for (int i = 0; i < 8; i++) {
-        std::cout << this->registers[i].getName() << ": " << this->registers[i].getValue() << std::endl;
+    for (const auto & i : this->registers) {
+        std::cout << i.getName() << ": " << i.getValue() << std::endl;
     }
 }
 // getters
