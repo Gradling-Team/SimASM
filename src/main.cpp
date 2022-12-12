@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 #include "FileParsing.hpp"
-
+#include "ControlProcessUnit.hpp"
 
 int main() {
     FileParsing file("ASMFiles/example.txt"); // Create FileParsing object
@@ -22,5 +22,16 @@ int main() {
     for (int i = 0; i < code->getCodeSize(); i++) {
         cout << "line: " << i << " Op: " << code->getLine(i) << endl;
     }
+    ControlProcessUnit one;
+    one.run();
+    cout << "Memory status: " << endl;
+    for (int i = 0; i < mem->getCurrentSize(); i++) {
+        cout << "Address: " << i << " Name: "+mem->getCell(i).name<<" Data: " << mem->get(i) << endl;
+    }
+    // get memory by name
+    cout << "Memory status: " << endl;
+        cout << "Address: " << " Name: "<< mem->get("A") << endl;
+        cout << "Address: " << " Name: "<< mem->get("B") << endl;
+        cout << "Address: " << " Name: "<< mem->get("RES") << endl;
     return 0;
 }

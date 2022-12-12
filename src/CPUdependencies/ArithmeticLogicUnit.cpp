@@ -101,7 +101,7 @@ void ArithmeticLogicUnit::SRL(const std::string& r1, const int i) {
 }
 // memory operations
 void ArithmeticLogicUnit::LDA(const std::string& r1, const std::string& a1) {
-    stackRegisters->setRegisterValue(r1, memory->get(a1));
+    stackRegisters->setRegisterValue(r1, stackRegisters->getRegisterValue(a1));
 }
 void ArithmeticLogicUnit::STR(const std::string& a1, const std::string& r1) {
     memory->store(a1, stackRegisters->getRegisterValue(r1));
