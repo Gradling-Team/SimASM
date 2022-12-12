@@ -41,4 +41,4 @@ private:
     Memory* memPtr;
     Code* codePtr;
 };
-#endif //SIMASM_FILEPARSING_HPP
+#endif
