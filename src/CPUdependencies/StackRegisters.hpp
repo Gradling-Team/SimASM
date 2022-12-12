@@ -23,6 +23,8 @@ public:
     Register getRegister(const std::string& name); // Gets a register
     void setRegisterValue(const std::string& name, int value); // Sets the value of a register
     std::string getRegisterName(int index); // Gets the name of a register
+    friend std::ostream& operator<<(std::ostream &os, const StackRegisters &stack); // Overloaded operator
+    void display() const; // Displays the stack and registers
 private:
     std::stack<int> stack; // Stack
     Register registers[8]; // Registers
@@ -32,6 +34,7 @@ private:
     // PC is the program counter
     // SP is the stack pointer
     // TMP TMP2 are temporary registers used for holding direct addressed memory values and constant.
+
 };
 
 

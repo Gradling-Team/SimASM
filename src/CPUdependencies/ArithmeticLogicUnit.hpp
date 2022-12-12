@@ -54,6 +54,8 @@ public:
     void setTMP(int i); // Sets the TMP register
     void setTMP2(int i); // Sets the TMP2 register
     void incPC(); // Increments the program counter
+    // display registers
+    void displayStatus();
 private:
     StackRegisters * stackRegisters{}; // The registers and stack
     Code * code; // The code

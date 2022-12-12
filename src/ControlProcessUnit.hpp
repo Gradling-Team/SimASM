@@ -21,7 +21,7 @@ public:
     ControlProcessUnit();
     // Destructor
     ~ControlProcessUnit();
-    void run();//switch case to select and execute operation
+    void run(bool stepByStep);//switch case to select and execute operation
 private:
     struct opCode {
         int argNumber;
@@ -37,6 +37,7 @@ private:
     Code* codePtr;
     ArithmeticLogicUnit* aluPtr;
     opCode currentOpCode;
+    bool stepByStep;
     // Methods
     void loadOpCode(const std::string& line);
     void executeOpCode();

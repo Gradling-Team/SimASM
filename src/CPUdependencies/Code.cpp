@@ -4,6 +4,7 @@
 
 #include "Code.hpp"
 #include <utility>
+#include <iostream>
 // instance definition
 Code * Code::instancePtr = nullptr;
 //constructor
@@ -92,4 +93,21 @@ int Code::getLabelLineNumber(const std::string& name) {
 int Code::getCodeSize() const {
     //return the code size
     return this->codeSize;
+}
+
+std::ostream &operator<<(std::ostream &os, const Code &code) {
+    // we return the detected labels and the code
+    os << "Detected labels:" << std::endl;
+    for (int i = 0; i < code.labelCount; i++) {
+        os << code.labels.at(i).name << " " << code.labels.at(i).lineNumber << std::endl;
+    }
+    os << "Code:" << std::endl;
+    for (int i = 0; i < code.codeSize; i++) {
+        os << "Line " << i << " : " << code.code[i] << std::endl;
+    }
+    return os;
+}
+
+void Code::display() const {
+    std::cout << *this;
 }

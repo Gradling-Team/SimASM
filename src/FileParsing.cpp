@@ -82,6 +82,9 @@ void FileParsing::loadMemory() {
         if (line.find("#DATA") != std::string::npos) {
             continue;
         }
+        if (line.empty()){
+            continue;
+        }
         if (line.find('!') != std::string::npos) {
             continue;
         }
@@ -141,6 +144,9 @@ void FileParsing::loadCode() {
     // we load the code
     while (this->lineNum < this->lineCount) {
         line = getLine();
+        if (line.empty()) {
+            continue;
+        }
         if (line.find('!') != std::string::npos) {
             continue;
         }

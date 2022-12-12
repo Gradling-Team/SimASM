@@ -139,3 +139,10 @@ void ArithmeticLogicUnit::setTMP2(int i) {
 void ArithmeticLogicUnit::incPC() {
     stackRegisters->setRegisterValue("PC", stackRegisters->getRegisterValue("PC") + 1);
 }
+
+void ArithmeticLogicUnit::displayStatus() {
+    stackRegisters->display();
+}
+
+
+// Memory.cpp

@@ -45,6 +45,8 @@ void StackRegisters::displayRegisters() {
         std::cout << this->registers[i].getName() << ": " << this->registers[i].getValue() << std::endl;
     }
 }
+// getters
+
 // checks
 bool StackRegisters::isEmpty() {
     return this->stack.empty();
@@ -84,4 +86,22 @@ void StackRegisters::setRegisterValue(const std::string& name, int value) {
             i.setValue(value);
         }
     }
+}
+// overloaded operators
+std::ostream &operator<<(std::ostream &os, const StackRegisters &stack) {
+    os << "Display from StackRegister Class" << std::endl;
+    os << "Stack Status: " << std::endl;
+    std::stack<int> temp = stack.stack;
+    while (!temp.empty()) {
+        os << temp.top() << std::endl;
+        temp.pop();
+    }
+    os << "Registers Status: " << std::endl;
+    for (const auto & i : stack.registers) {
+        os << i.getName() << ": " << i.getValue() << std::endl;
+    }
+    return os;
+}
+void StackRegisters::display() const{
+    std::cout << *this;
 }

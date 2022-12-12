@@ -17,7 +17,7 @@ class Memory {
         std::vector<MemoryCell> memory;
         int size;
         Memory();
-
+        friend std::ostream &operator<<(std::ostream &os, const Memory &memory); // friend function to print the memory
     public:
         static Memory* getInstance();
         ~Memory();
@@ -35,7 +35,8 @@ class Memory {
         int getAddr(const std::string& name);
         void storeArray(const std::string& name, int ** data, int length);
         void clear();
+        void display();
 };
 
 
-#endif //SIMASM_MEMORY_HPP
+#endif //SIMASM;_MEMORY_HPP

@@ -9,6 +9,7 @@ ControlProcessUnit::ControlProcessUnit() {
     this->memPtr = Memory::getInstance();
     this->codePtr = Code::getInstance();
     this->aluPtr = new ArithmeticLogicUnit();
+    this->stepByStep = false;
 }
 // destructor
 ControlProcessUnit::~ControlProcessUnit() {
@@ -17,12 +18,31 @@ ControlProcessUnit::~ControlProcessUnit() {
     this->memPtr = nullptr;
     this->codePtr = nullptr;
 }
-void ControlProcessUnit::run() {// this function represent a cpu cycle
+void ControlProcessUnit::run(bool stepBystep) {// this function represent a cpu cycle
     //get the next line of code
+    // if the user wants to step through the code
+    this->stepByStep = stepBystep;
+    // we display an acknowledgment
+    if (this->stepByStep) {
+        std::cout << "You are now stepping through the code." << std::endl;
+        std::cout << "Press enter to continue..." << std::endl;
+        std::cin.get();
+    }
     while (aluPtr->getPC() >=0) {
         std::string line = this->codePtr->getLine(aluPtr->getPC());
         //load the op code
         this->loadOpCode(line);
+        // if the user wants to step through the code we display the current status
+        if(stepByStep){
+            std::cout << "Line: " << line << std::endl;
+            std::cout << "PC: " << aluPtr->getPC() << std::endl;
+            codePtr->display();
+            memPtr->display();
+            aluPtr->displayStatus();
+            // we wait for the user to acknowledge
+            std::cout << "Press enter to continue..." << std::endl;
+            std::cin.get();
+        }
         //execute the op code
         this->executeOpCode();
         //increment the program counter if line is not a "HLT" instruction

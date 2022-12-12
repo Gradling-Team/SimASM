@@ -161,3 +161,16 @@ Memory* Memory::getInstance() {
     }
     return Memory::memoryInstance;
 }
+
+//overloaded operator
+std::ostream &operator<<(std::ostream &os, const Memory &memory) {
+    os << "Memory Status: " << std::endl;
+    for (int i = 0; i < memory.size; i++) {
+        os << "Address: " << memory.memory.at(i).address << " Name: " << memory.memory.at(i).name << " Data: " << memory.memory.at(i).data << std::endl;
+    }
+    return os;
+}
+
+void Memory::display() {
+    std::cout << *this;
+}

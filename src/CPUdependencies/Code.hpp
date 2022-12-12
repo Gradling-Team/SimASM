@@ -19,6 +19,7 @@ private:
         int lineNumber;
     };
     std::vector<Label> labels;
+     // friend function to print the code
 public:
     static Code* getInstance();
     void add(std::string line);
@@ -27,7 +28,8 @@ public:
     std::string getLine(int lineNumber);
     int getLabelLineNumber(const std::string& name);
     int getCodeSize() const;
-
+    friend std::ostream &operator<<(std::ostream &os, const Code &code);
+    void display() const;
     ~Code();
 };
 
