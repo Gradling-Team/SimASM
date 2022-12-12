@@ -54,25 +54,30 @@ void SyntaxChecker::checkSyntax() {
         currentLine++;
         std::cout << line << std::endl;
         //check if the line is a comment or an empty line and skip it
-        if(line.front() == '!' or line == "\r"){
+        if(line.front() == '!' or line.empty()){
             continue;
         }
-        //check if the line is a data line
+        //check if the line is section line
         if(line.front() == '#'){
             //check if we enter the data section
             if(line == keyWord[0]){
+                //check the syntax of the data section
                 dataSyntax();
                 //Update the line with currentLine -1 because the currentLine has been incremented
                 line = this->file->getLine(currentLine-1);
             }
+            //check if we enter the code section
             if(line == keyWord[1]){
+                //check the syntax of the code section
                 codeSyntax();
                 continue;
             }
+            //If it's not data section or code section, it's an error
             std::cout << "^^^Error: Unknown keyword^^^" << std::endl;
             errorCount++;
             continue;
         }
+        //If it's not a comment, an empty line or a section line, it's an error
         std::cout << "^^^Error: Unknown Syntax error^^^" << std::endl;
         errorCount++;
 
@@ -108,7 +113,7 @@ void SyntaxChecker::dataSyntax() {
             data = false;
             continue;
         }
-        if(line.front() == '!' or line.front() == '\r'){
+        if(line.front() == '!' or line.empty()){
             continue;
         }
         int i = 0;
@@ -123,17 +128,17 @@ void SyntaxChecker::dataSyntax() {
             i++;
         }
         //check if there is a value
-        //We use line.length()-1 because the last character is a carriage return
-        if (i >= line.length() -1) {
+        //We use line.length() to check if we are at the end of the line
+        if (i >= line.length()) {
             std::cout << "^^^Error: missing value^^^" << std::endl;
             errorCount++;
             continue;
         }
         //Check if the given value is a number
-        while(i < line.length() -1) {
+        while(i < line.length()) {
             //Character may be a number, "?" or "," but it this case "," must be followed and preceded by a number or "?
             if ((line[i] < '0' or line[i] > '9' ) and line[i] != '?' and line[i] != ','
-            or (line[i] == ',' and (line.length() == i +2  or line[i+1] == ',' or line[i-1] == ' '))
+            or (line[i] == ',' and (line.length() == i +1  or line[i+1] == ',' or line[i-1] == ' '))
             ) {
                 std::cout << "^^^Error: value is not a number^^^" << std::endl;
                 errorCount++;
@@ -229,7 +234,7 @@ void SyntaxChecker::codeSyntax() {
         std::cout << line << std::endl;
         bool isinstr = false;
         //check if the line is a comment or an empty line
-        if(line.front() == '!' or line.front() == '\r'){
+        if(line.front() == '!' or line.empty()){
             continue;
         }
         int i = 0;
@@ -259,7 +264,7 @@ void SyntaxChecker::codeSyntax() {
                     }
                 }
                 for (int i = 0; i < instructionCount; i++) {
-                    if(line == instructions[i]->name + ":\r"){
+                    if(line == instructions[i]->name){
                         std::cout << "^^^Error: label name is a reserved keyword^^^" << std::endl;
                         errorCount++;
                         continue;
@@ -296,7 +301,7 @@ void SyntaxChecker::codeSyntax() {
                 i++;
             }
             buffer = "";
-            while (line[i] != ' ' and i < line.length() -1) {
+            while (line[i] != ' ' and i < line.length()) {
                 buffer += line[i];
                 i++;
             }
