@@ -64,7 +64,7 @@ private:
     void addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3);
     // Constants
     const std::string REGISTER[6] = {"T0", "T1", "T2", "T3"};
-    const std::string keyWord[2] = {"#DATA\r", "#CODE\r"};
+    const std::string keyWord[2] = {"#DATA", "#CODE"};
 };
 
 #endif

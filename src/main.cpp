@@ -4,11 +4,14 @@
 #include <iostream>
 using namespace std;
 #include "FileParsing.hpp"
-
+#include "SyntaxChecker.hpp"
 #include "ControlProcessUnit.hpp"
 
 int main() {
-    FileParsing file("ASMFiles/example.txt"); // Create FileParsing object
+    FileParsing file1("ASMFiles/example.txt"); // Create FileParsing object
+    SyntaxChecker SyntaxChecker(&file1); // Create SyntaxChecker object
+    SyntaxChecker.checkSyntax(); // Check the syntax of the file
+    FileParsing file("ASMFiles/example.txt");
     file.loadMemory();
     // check memory status
     Memory* mem = Memory::getInstance();
@@ -31,8 +34,8 @@ int main() {
     }
     // get memory by name
     cout << "Memory status: " << endl;
-        cout << "Address: " << " Name: "<< mem->get("A") << endl;
-        cout << "Address: " << " Name: "<< mem->get("B") << endl;
-        cout << "Address: " << " Name: "<< mem->get("RES") << endl;
+    cout << "Address: " << " Name: "<< mem->get("A") << endl;
+    cout << "Address: " << " Name: "<< mem->get("B") << endl;
+    cout << "Address: " << " Name: "<< mem->get("RES") << endl;
     return 0;
 }
