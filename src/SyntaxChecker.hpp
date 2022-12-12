@@ -24,6 +24,10 @@ public:
     void checkSyntax();
     // Getters
 private:
+    struct Label {
+        std::string name;
+        int nbr;
+    };
     struct Instruction{
         std::string name;
         std::string args[3];
@@ -31,19 +35,20 @@ private:
     //variables
     std::string varName[100];
     int varNumber;
-    int dataStart;
-    int codeStart;
+    Label label[100];
+    int labelCount;
+    int errorCount;
     FileParsing * file;
     int currentLine;
     int instructionCount;
     Instruction** instructions;
     // Methods
-    bool argValidity(std::string argtype, std::string arg);
-    void dataSyntax(void);
-    void codeSyntax(void);
+    bool argValidity(std::string argtype, const std::string& arg);
+    void dataSyntax();
+    void codeSyntax();
     void addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3);
     // Constants
-    const std::string REGISTER[6] = {"T0", "T1", "T2", "T3", "SP", "PC"};
+    const std::string REGISTER[6] = {"T0", "T1", "T2", "T3"};
     const std::string keyWord[2] = {"#DATA\r", "#CODE\r"};
 };
 
