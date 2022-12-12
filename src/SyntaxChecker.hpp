@@ -24,28 +24,43 @@ public:
     void checkSyntax();
     // Getters
 private:
+    // type used to store the labels and the number of time, each one appears in the file
     struct Label {
         std::string name;
         int nbr;
     };
+    // type used to store the instructions and the type of each argument
     struct Instruction{
         std::string name;
         std::string args[3];
     };
     //variables
+    //Array of variable
     std::string varName[100];
-    int varNumber;
+    //Number of variable in the array
+    int varCount;
+    //Array of label
     Label label[100];
+    //Number of label in the array
     int labelCount;
+    //Numer of error in the file
     int errorCount;
+    //fil use to check the syntax
     FileParsing * file;
+    //Current line in the file
     int currentLine;
-    int instructionCount;
+    //Array used to store the instruction
     Instruction** instructions;
+    //Number of instruction in the array
+    int instructionCount;
     // Methods
+    //take the type of argument expected and an argument, return true if the argument is of the expected type
     bool argValidity(std::string argtype, const std::string& arg);
+    //Check the syntax of the data section
     void dataSyntax();
+    //Check the syntax of the code section
     void codeSyntax();
+    //add the instruction to the array
     void addInstruction(std::string name, std::string arg1, std::string arg2, std::string arg3);
     // Constants
     const std::string REGISTER[6] = {"T0", "T1", "T2", "T3"};

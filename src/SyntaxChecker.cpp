@@ -11,11 +11,12 @@
 SyntaxChecker::SyntaxChecker(FileParsing *file) {
     this->file = file;
     this->labelCount = 0;
-    this->varNumber = 0;
+    this->varCount = 0;
     this->instructionCount = 0;
     this->currentLine = 0;
     this->errorCount = 0;
     this->instructions = nullptr;
+    //Initialize the array of instruction
     addInstruction("LDA", "REG", "RVC", "NO");
     addInstruction("STR", "VAR", "RC", "NO");
     addInstruction("PUSH", "RVC", "NO", "NO");
@@ -43,9 +44,8 @@ SyntaxChecker::SyntaxChecker(FileParsing *file) {
     addInstruction("PEEKN", "REG", "C", "NO");
 
 }
-// Check the syntax of the file
+//Main function to check the syntax of the file,
 void SyntaxChecker::checkSyntax() {
-    currentLine = 0;
     //loop until the end of the file
     while(currentLine < file->getLineCount()){
         //get the current line
@@ -53,8 +53,8 @@ void SyntaxChecker::checkSyntax() {
         //increment the line counter
         currentLine++;
         std::cout << line << std::endl;
-        //check if the line is a comment
-        if(line.front() == '!'){
+        //check if the line is a comment or an empty line and skip it
+        if(line.front() == '!' or line == "\r"){
             continue;
         }
         //check if the line is a data line
@@ -143,7 +143,7 @@ void SyntaxChecker::dataSyntax() {
         }
 
         //check if the variable name is valid
-        for(int j = 0; j < varNumber; j++) {
+        for(int j = 0; j < varCount; j++) {
             if (varName[j] == variableName) {
                 std::cout << "^^^Variable already declared^^^" << std::endl;
                 errorCount++;
@@ -174,8 +174,8 @@ void SyntaxChecker::dataSyntax() {
             continue;
         }
         if(isvar){
-        varName[varNumber] = variableName;
-        varNumber++;}
+        varName[varCount] = variableName;
+        varCount++;}
     }
 
 }
@@ -229,7 +229,7 @@ void SyntaxChecker::codeSyntax() {
         std::cout << line << std::endl;
         bool isinstr = false;
         //check if the line is a comment or an empty line
-        if(line.front() == '!' or line.front() == ' '){
+        if(line.front() == '!' or line.front() == '\r'){
             continue;
         }
         int i = 0;
@@ -360,7 +360,7 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
     }
     //check if the argument is a variable
     if(argtype == "VAR"){
-        for (int i = 0; i < varNumber; ++i) {
+        for (int i = 0; i < varCount; ++i) {
             if(arg == varName[i]){
                 return true;
             }
@@ -404,7 +404,7 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
             }
         }
         //Check if the argument is a variable
-        for (int i = 0; i < varNumber; ++i) {
+        for (int i = 0; i < varCount; ++i) {
             if(arg == varName[i]){
                 return true;
             }
