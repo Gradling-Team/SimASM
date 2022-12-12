@@ -361,7 +361,9 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
             }
             arg.pop_back();
         }
+        //Delete the first bracket
         arg.pop_back();
+        //If we haven't found a number, the argument is not valid
         if(!index){
             std::cout << "^^^Error: missing index^^^" << std::endl;
             errorCount++;
@@ -409,6 +411,7 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
     }
     //check if the argument is a const or a register
     if(argtype == "RC"){
+        //Check for number
         bool isnumber = true;
         for (char i : arg) {
             if(i < '0' or i > '9'){
@@ -418,6 +421,7 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
         if(isnumber){
             return true;
         }
+        //Check for register
         for (const auto & i : REGISTER) {
             if(arg == i){
                 return true;
@@ -452,8 +456,8 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
     //Check if the argument is a label
     if(argtype == "LABEL"){
         for (int i = 0; i < labelCount; ++i) {
-
-            if(arg + ":\r" == label[i].name){
+            //arg doesn't have a colon but label[i] does
+            if(arg + ":" == label[i].name){
                 return true;
             }
         }
@@ -461,8 +465,8 @@ bool SyntaxChecker::argValidity(std::string arg, const std::string& argtype) {
         errorCount++;
         return false;
     }
-    //Check if argument is necessary
 
+    //Generic error message for invalid argument
     std::cout << "^^^Error: Invalid argument, expected: " + argtype + "^^^" << std::endl;
     errorCount++;
     return false;
