@@ -44,7 +44,6 @@ void ControlProcessUnit::run(bool stepByStep) {// this function represent a cpu 
             while(tmp != "y" && tmp != "Y" && tmp !="n" && tmp !="N" && tmp !="\n" && tmp != "\r" && tmp != ""){
             std::cout << "do you want to keep step by step ? [Y/n]"<<std::endl;
             std::getline(std::cin, tmp);
-            std::cout << tmp << std::endl;
             if(tmp == "y" || tmp == "Y" || tmp == "\n" || tmp == "\r" || tmp == ""){
             continue;}
             if(tmp == "n" || tmp == "N"){
