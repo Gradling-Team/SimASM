@@ -32,7 +32,7 @@ void Code::clear() {
     //delete the code
     delete[] this->code;
     //delete the labels
-    delete[] this->labels;
+    this->labels.clear();
     //set the code to null
     this->code = nullptr;
     //set the code size to 0
@@ -59,18 +59,14 @@ void Code::add(std::string line) {
 }
 //add a label to the code
 void Code::addLabel(std::string name, int lineNumber) {
-    //create a new array of labels
-    auto *newLabels = new Label[this->labelCount + 1];
-    //copy the old labels into the new array
-    for (int i = 0; i < this->labelCount; i++) {
-        newLabels[i] = this->labels[i];
-    }
-    //add the new label to the end of the array
-    newLabels[this->codeSize] = {std::move(name), lineNumber};
-    //delete the old labels
-    delete[] this->labels;
-    //set the labels to the new labels
-    this->labels = newLabels;
+    //create a new label object
+    Label label;
+    //set the label name
+    label.name = std::move(name);
+    //set the label line number
+    label.lineNumber = lineNumber;
+    //add the label to the labels vector
+    this->labels.push_back(label);
     //increment the label count
     this->labelCount++;
 }
@@ -84,9 +80,9 @@ int Code::getLabelLineNumber(const std::string& name) {
     //loop through the labels
     for (int i = 0; i < this->labelCount; i++) {
         //if the label name matches the name passed in
-        if (this->labels[i].name == name) {
+        if (this->labels.at(i).name == name) {
             //return the line number
-            return this->labels[i].lineNumber;
+            return this->labels.at(i).lineNumber;
         }
     }
     //if the label doesn't exist, return -1

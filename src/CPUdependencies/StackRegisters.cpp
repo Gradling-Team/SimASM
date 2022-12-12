@@ -7,7 +7,7 @@
 // Constructor
 StackRegisters::StackRegisters() {
     this->stack = std::stack<int>();
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 8; i++) {
         this->registers[i] = Register(registerNames[i], 0);
     }
 }
@@ -41,7 +41,7 @@ void StackRegisters::printStack() {
     }
 }
 void StackRegisters::displayRegisters() {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 8; i++) {
         std::cout << this->registers[i].getName() << ": " << this->registers[i].getValue() << std::endl;
     }
 }
@@ -68,6 +68,14 @@ Register StackRegisters::getRegister(const std::string& name) {
         }
     }
     return {"ERROR", -1};
+}
+std::string StackRegisters::getRegisterName(int value) {
+    for (const auto & i : this->registers) {
+        if (i.getValue() == value) {
+            return i.getName();
+        }
+    }
+    return "ERROR";
 }
 // setters
 void StackRegisters::setRegisterValue(const std::string& name, int value) {

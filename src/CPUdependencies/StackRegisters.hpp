@@ -22,11 +22,16 @@ public:
     int getRegisterValue(const std::string& name); // Gets the value of a register
     Register getRegister(const std::string& name); // Gets a register
     void setRegisterValue(const std::string& name, int value); // Sets the value of a register
+    std::string getRegisterName(int index); // Gets the name of a register
 private:
     std::stack<int> stack; // Stack
-    Register registers[6]; // Registers
+    Register registers[8]; // Registers
     const int maxStackSize = 1024; // Max stack size as each int is 4 bytes so 1024 ints = 4096 bytes
-    const std::string registerNames[6] = {"T0", "T1", "T2", "T3", "PC","SP"}; // Register names
+    const std::string registerNames[8] = {"T0", "T1", "T2", "T3", "PC","SP","TMP","TMP2"}; // Register names
+    // T registers are multipurpose registers
+    // PC is the program counter
+    // SP is the stack pointer
+    // TMP TMP2 are temporary registers used for holding direct addressed memory values and constant.
 };
 
 

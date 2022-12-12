@@ -31,7 +31,7 @@ class Memory {
         // get memory cell
         MemoryCell getCell(const std::string& name);
         MemoryCell getCell(int address);
-        int getCurrentSize();
+        int getCurrentSize() const;
         int getAddr(const std::string& name);
         void storeArray(const std::string& name, int ** data, int length);
         void clear();

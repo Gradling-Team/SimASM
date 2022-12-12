@@ -5,7 +5,7 @@
 #ifndef SIMASM_CODE_HPP
 #define SIMASM_CODE_HPP
 #include <string>
-
+#include <vector>
 class Code {// singleton class to store executable assembly code
 private:
     static Code *instancePtr;
@@ -18,7 +18,7 @@ private:
         std::string name;
         int lineNumber;
     };
-    Label *labels{};
+    std::vector<Label> labels;
 public:
     static Code* getInstance();
     void add(std::string line);

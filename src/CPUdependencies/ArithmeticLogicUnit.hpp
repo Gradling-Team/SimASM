@@ -41,18 +41,26 @@ public:
     void NOP(); // No operation
     //memory
     void LDA(const std::string& r1, const std::string& a1); // Loads a register from memory
-    void STR(const std::string& r1, std::string a1); // Stores a register to memory
+    void STR(const std::string& r1, const std::string& a1); // Stores a register to memory
     // indirect memory load/store
     void LDA(const std::string& r1, const std::string& a1, const std::string& shift); // Loads a register from memory indirectly
     void STR(const std::string& r1, const std::string& a1, const std::string& shift); // Stores a register to memory indirectly
     // Halt
     void HLT(); // Halts the program
+    // get
+    int getPC(); // Gets the program counter
+    int getRegisterValue(const std::string &r1); // Gets the value of a register
+    // set
+    void setTMP(int i); // Sets the TMP register
+    void setTMP2(int i); // Sets the TMP2 register
+    void incPC(); // Increments the program counter
 private:
     StackRegisters * stackRegisters{}; // The registers and stack
     Code * code; // The code
     Memory * memory; // The memory
     // Methods
     void jumpToLabel(const std::string &label); // Jumps to a label
+
 };
 
 

@@ -136,6 +136,8 @@ void FileParsing::loadCode() {
     }
     // we remember the line number of the first line of code
     int codeStart = this->lineNum;
+    // we adjust codStart for the jump
+    codeStart++;
     // we load the code
     while (this->lineNum < this->lineCount) {
         line = getLine();
@@ -144,6 +146,8 @@ void FileParsing::loadCode() {
         }
         // if line is a label
         if (line.find(':') != std::string::npos) {
+            this->codePtr->add(line);
+            // we remove ':' from the line
             std::string labelName;
             std::stringstream ss(line);
             std::getline(ss, labelName, ':');
